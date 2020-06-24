@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dojo - Testes Automatizados</title>
+</head>
+<body>
+
+    <script>
+        // Cria 'API' de teste
+        const apiTest = (assert,expect) => {
+            if(assert === expect ) {
+                console.log(`%c OK`, 'color: green;')
+            } else {
+                console.log(`%c Erro`, 'color: red;')
+            }
+        }  
+
+        //Cria function de describe
+        const describe = (description, fn) => {
+            console.log(description);
+            fn();
+        }
+
+         //Funcao de soma
+        const soma = (a,b) => {
+            return a + b;
+        }
+        
+        //Funcao de divisao
+        const divisao = (a,b) => {
+            return a / b;
+        }
+
+        //Asserts de soma
+        describe("Cria teste de soma", function(){
+            apiTest(soma(2,3), 4)
+        });
+        
+        //Asserts de divisao e divisao por 0
+        describe("Cria teste de divisao", function(){
+            describe("-- Cria teste de divisao normal", function(){
+                apiTest(divisao(6,3), 2)
+            });
+            describe("-- Cria teste de divisao por 0", function(){
+                apiTest(divisao(6,0), Infinity)
+            });
+        })
+
+        //Teste do ForEach
+        const forEach = (array, fn) => {
+            for (let i = 0; i < array.length; i++) {
+                fn(array[i], i , array);
+            }
+        }
+
+        const array = [1,2,4,6,8]
+        let count = 0;
+
+        const fucao = (item, index, array) => {
+            count++;
+        }
+        
+        forEach(array, fucao)
+
+        apiTest(count,array.length)
+        
+        //Teste do Map 
+
+        function map(array, fn) {
+
+            const novoArray = []
+            for (let i = 0; i < array.length; i++) {
+                novoArray.push(fn(array[i],i,array))
+            }
+
+            return novoArray
+        }
+
+        const fnMais10 = item => item + 10
+
+        const arrayMais10 = map(array, fnMais10)
+
+        apiTest(arrayMais10[0], 11)
+
+        //Teste do Filter 
+
+        function filter (array, fn) {
+            const novoArrayFiltrado = [];
+                for(let i = 0; i < array.length; i++) {
+                    if(fn(array[i])) {
+                        novoArrayFiltrado.push(array[i]);
+                    }
+                }
+
+            return novoArrayFiltrado
+        }
+
+        function returnImpares(item) {
+            if (item % 2 === 0) {
+                return true
+            } else {
+                return false
+            }
+        }
+
+        apiTest(filter(array, returnImpares)[0], 2)
+        apiTest(filter(array, returnImpares).length, 4)
+    </script>
+
+    <script>
+        // forEach(array, function name(item, index, array) {})
+        // map(array, function name(item, index, array) {})
+        // filter(array, function comparator(item, index, array) {})
+
+    </script>
+</body>
+</html>
